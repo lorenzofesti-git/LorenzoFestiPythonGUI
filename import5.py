@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 
 
+
 class ThinAirfoilTheory(object):
 	def __init__(self):
 		self.dat_file, self.txt_file = None, None

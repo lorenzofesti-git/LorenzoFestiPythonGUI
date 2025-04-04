@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import plotly.figure_factory as ff
 """
 
+
 For cambered airfoil use parameters
 ==================================================================
 c = 1.0                             # transform parameter

@@ -2,6 +2,7 @@ import numpy as np
 from scipy import interpolate
 
 
+
 def COMPUTE_CIRCULATION(a,b,x0,y0,numT,Vx,Vy,X,Y):
     
     t     = np.linspace(0,2*np.pi,numT)                                         # Discretized ellipse into angles [rad]
