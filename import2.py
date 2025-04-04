@@ -12,6 +12,7 @@ def COMPUTE_KL_VPM(XC,YC,XB,YB,phi,S):
     K = np.zeros([numPan,numPan])                                                   # Initialize K integral matrix
     L = np.zeros([numPan,numPan])                                                   # Initialize L integral matrix
     
+    
     # Compute integral
     for i in range(numPan):                                                         # Loop over i panels
         for j in range(numPan):                                                     # Loop over j panels
