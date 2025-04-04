@@ -99,7 +99,7 @@ def plot1():
         yf=np.concatenate((np.flip(yu), yl))
     else:
         return None  # Restituisce None se il numero non ha 4 o 5 arr_naca
-   
+
 
     #  IMPORTA QUI DENTRO LA FUNZIONE PER CREARE PANNELLI
 
