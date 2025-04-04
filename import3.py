@@ -12,6 +12,7 @@ def STREAMLINE_VPM(XP,YP,XB,YB,phi,S):
     Nx = np.zeros(numPan)                                                       # Initialize Nx integral array
     Ny = np.zeros(numPan)                                                       # Initialize Ny integral array
     
+    
     # Compute Nx and Ny
     for j in range(numPan):                                                     # Loop over all panels
         # Compute intermediate values

@@ -2,22 +2,6 @@ import numpy as np
 import math
 from matplotlib import *
 import matplotlib.pyplot as plt
-import plotly.figure_factory as ff
-"""
-
-For cambered airfoil use parameters
-==================================================================
-c = 1.0                             # transform parameter
-h, k = 0.1, 0.1                     # center of circle in z plane                   
-R_0 =math.sqrt((c - h)**2 + k**2)   # circle radius
-
-For symmetric airfoil
----------------------
-c = 1.0                             # transform parameter
-h, k = -0.15, 0                     # center of circle in z plane
-R_0 = 1.15                          # circle radius 
--------------------------------------------------------------------
-"""
 
 def conformal_map():
 
@@ -63,6 +47,9 @@ def conformal_map():
    Z = X + Y*1j
    zeta_grid = Z + c**2 / Z
 
+   # plot z plane and zeta plane grids
+
+   #----------------------------------------------------------
 
    # ============ Solving flow over the airfoil ===============
    U = 1.0                           # Uniform flow velocity
@@ -73,28 +60,5 @@ def conformal_map():
    # grid in the zp (z prime) reference frame
    Xp = (X - h) * np.cos(aoa) + (Y - k) * np.sin(aoa)
    Yp = (Y - k) * np.cos(aoa) - (X - h) * np.sin(aoa)
-
-   # Kutta condition (stagnation point at trailing edge)
-   Vstr = -Yp[0, 0] * 4 * np.pi * U
-
-   #velocity field in zp plane DA RIFARE TUTTO QUESTO PEZZO
-
-   v_r = np.zeros(np.shape(X))
-   v_t = np.zeros(np.shape(X))
-   psi = np.zeros(np.shape(X))
-   v_r=(U*(1-((R_0**2)/(r**2)))*np.cos(theta))
-   v_t=(-U*(1+((R_0**2)/(r**2)))*np.sin(theta))-(Vstr/(2 * np.pi * r))
-   u=v_r*np.cos(theta)-v_t*np.sin(theta)
-   v=v_r*np.sin(theta)+v_t*np.cos(theta)
-   # velocity field in zeta plane
-   dzeta_dz = 1 - (c/Z)**2
-   V_zeta = (u - v * 1j) / dzeta_dz
-   u_zeta = V_zeta.real
-   v_zeta = -V_zeta.imag
-
-   x_dd = np.linspace(-3, 3, 100)
-   y_dd = np.linspace(-3, 3, 100)
-   Y_d, X_d = np.meshgrid(x_dd, y_dd)
-   fig = ff.create_streamline(x_dd, y_dd, u_zeta, v_zeta, arrow_scale=.1)
-   fig.show() 
-  
+   plt.plot(Xp,Yp)
+   plt.show
