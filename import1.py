@@ -149,7 +149,7 @@ def pannelli(Vinf,AoA,XF,YF):
     CpXY = 1 - (Vxy/Vinf)**2                                                    # Pressure coefficient []
 
 
-                                    # If we are plotting streamlines or Cp contours
+     # If we are plotting streamlines or Cp contours
     # Compute circulation
     aa   = 0.75                                                                 # Ellipse horizontal half-length
     bb   = 0.25                                                                 # Ellipse vertical half-length
