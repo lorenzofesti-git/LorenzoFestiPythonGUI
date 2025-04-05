@@ -3,9 +3,9 @@ import math
 from matplotlib import *
 import matplotlib.pyplot as plt
 import plotly.figure_factory as ff
+
+
 """
-
-
 For cambered airfoil use parameters
 ==================================================================
 c = 1.0                             # transform parameter
@@ -24,8 +24,8 @@ def conformal_map():
 
    # Joukowski transform parameters
    c = 1.0                             # transform parameter
-   h, k = -0.15, 0                     # center of circle in z plane
-   R_0 = 1.15                          # circle radius 
+   h, k = 0.1, 0.1                     # center of circle in z plane                   
+   R_0 =math.sqrt((c - h)**2 + k**2)   # circle radius
 
    # ===== Joukoski transform curves ============================
 
@@ -78,7 +78,7 @@ def conformal_map():
    # Kutta condition (stagnation point at trailing edge)
    Vstr = -Yp[0, 0] * 4 * np.pi * U
 
-   #velocity field in zp plane DA RIFARE TUTTO QUESTO PEZZO
+   #velocity field in zp plane 
 
    v_r = np.zeros(np.shape(X))
    v_t = np.zeros(np.shape(X))
@@ -96,6 +96,7 @@ def conformal_map():
    x_dd = np.linspace(-3, 3, 100)
    y_dd = np.linspace(-3, 3, 100)
    Y_d, X_d = np.meshgrid(x_dd, y_dd)
+   # da mettere nello script principale
    fig = ff.create_streamline(x_dd, y_dd, u_zeta, v_zeta, arrow_scale=.1)
    fig.show() 
   
