@@ -12,24 +12,24 @@ import simpy as sp
 import scipy.spatial as spatial
 import scipy.integrate as integrate
 import pathlib as path
-from import1 import *
-from import5 import *
-from import6 import *
+from panelmethod import *
+from thinairf_solve import *
+from Joukoski_transf_curves import *
 from nacanumber import *
 
-def plot1(): 
+def met_panels(): 
     #impostiamo i dati presi dalla GUI, e creaiamo un linspace
         # the figure that will contain the plot 
     fig = Figure(figsize = (5,4), dpi = 100)  
     # adding the subplot 
-    plot1 = fig.add_subplot(111) 
+    met_panels = fig.add_subplot(111) 
     corda= 1
-    x=np.array(linspace(0, float(corda), num=1000))
+    x=np.array(linspace(0, float(corda), num=100))
     naca=nacaa_var.get()
-    xb=zeros(shape=(200,1))
-    yb=zeros(shape=(200,1))
-    nacanum(naca,x)
-    #  IMPORTA QUI DENTRO LA FUNZIONE PER CREARE PANNELLI
+
+    xu,xl,yu,yl,xf,yf,ymediana,deltY= nacanum(naca,x)
+    
+    xb,yb,VxC, VyC=pannelli(float(U_inf_value),float(AoA_value),xf,yf)
 
 
     # definiamo spazio del plot
@@ -43,44 +43,103 @@ def plot1():
 
     canvas.draw()
     
-    plot1.set_xlim(-0.5,1.2)
-    plot1.set_ylim(-max(xu)*1.2,max(xu)*1.2)
-    plot1.plot(xu,yu,'k-',xl,yl,'k-',x,ymediana,'r-',xb,yb,'2') 
+    met_panels.set_xlim(-0.5,1.2)
+    met_panels.set_ylim(-max(xu)*1.2,max(xu)*1.2)
+    met_panels.plot(xu,yu,'k-',xl,yl,'k-',x,ymediana,'r-',xb,yb,'2') 
+    #,xb,yb,'2'
 
+def met_prof_sott(): 
+    #impostiamo i dati presi dalla GUI, e creaiamo un linspace
+        # the figure that will contain the plot 
+    fig = Figure(figsize = (5,4), dpi = 100)  
+    # adding the subplot 
+    met_panels = fig.add_subplot(111) 
+    corda= 1
+    x=np.array(linspace(0, float(corda), num=100))
+    naca=nacaa_var.get()
+    # xb=zeros(shape=(200,1))
+    # yb=zeros(shape=(200,1))
+    xu,xl,yu,yl,xf,yf,ymediana,deltY= nacanum(naca,x)
+
+    A0, A1, A2 = solve_thin_airf_theory(angle_of_attack=5*np.pi/180, n_coefficients=3)
+
+
+    # definiamo spazio del plot
+
+        # creating the Tkinter canvas 
+    # containing the Matplotlib figure 
+    canvas = FigureCanvasTkAgg(fig, 
+                                master = window)   
+    canvas.get_tk_widget().grid(row=5,column=1,columnspan=3,rowspan=20,sticky=N)
+        # here: plot suff to your fig
+
+    canvas.draw()
+    
+    met_panels.set_xlim(-0.5,1.2)
+    met_panels.set_ylim(-max(xu)*1.2,max(xu)*1.2)
+    met_panels.plot(xu,yu,'k-',xl,yl,'k-',x,ymediana,'r-',xb,yb,'2') 
+    #,xb,yb,'2'
 #
-# def calculate(*args):
-#     try:
-#         value = float(nacaa_var.get())
-#         AoA_value.set(float(value*0.1))
-#     except ValueError:
-#         pass
-#
+
+def met_trasf_conf(): 
+    #impostiamo i dati presi dalla GUI, e creaiamo un linspace
+        # the figure that will contain the plot 
+    fig = Figure(figsize = (5,4), dpi = 100)  
+    # adding the subplot 
+    met_panels = fig.add_subplot(111) 
+    corda= 1
+    x=np.array(linspace(0, float(corda), num=100))
+    naca=nacaa_var.get()
+    # xb=zeros(shape=(200,1))
+    # yb=zeros(shape=(200,1))
+    xu,xl,yu,yl,xf,yf,ymediana,deltY= nacanum(naca,x)
+
+    A0, A1, A2 = solve_thin_airf_theory(angle_of_attack=5*np.pi/180, n_coefficients=3)
+
+
+    # definiamo spazio del plot
+
+        # creating the Tkinter canvas 
+    # containing the Matplotlib figure 
+    canvas = FigureCanvasTkAgg(fig, 
+                                master = window)   
+    canvas.get_tk_widget().grid(row=5,column=1,columnspan=3,rowspan=20,sticky=N)
+        # here: plot suff to your fig
+
+    canvas.draw()
+    
+    met_panels.set_xlim(-0.5,1.2)
+    met_panels.set_ylim(-max(xu)*1.2,max(xu)*1.2)
+    met_panels.plot(xu,yu,'k-',xl,yl,'k-',x,ymediana,'r-',xb,yb,'2') 
+    #,xb,yb,'2'
+
+
 # the main Tkinter window 
 window = Tk() 
 window.columnconfigure(3)
 window.rowconfigure(3)
 
 # setting the title 
-window.title('Plotting in Tkinter') 
+window.title('Plotting') 
 
 # dimensions of the main window 
 
 # buttons that displays the 3 plots
 plot_button = Button(master = window, 
-					command = plot1, 
+					command = met_panels, 
 					height = 10, 
 					width = 20, 
-					text = "Jukowsky") 
+					text = "Metodo a Pannelli") 
 plot_button2 = Button(master = window, 
-					command = plot2, 
+					command = met_prof_sott, 
 					height = 10, 
 					width = 20, 
 					text = "Profili Sottili") 
 plot_button3 = Button(master = window, 
-					command = plot3, 
+					command = met_trasf_conf, 
 					height = 10, 
 					width = 20, 
-					text = "Metodo a Pannelli") 
+					text = "Jukowsky") 
 
 # place the buttons 
 # in main window 
@@ -93,16 +152,18 @@ nacaa_var=StringVar()
 nacaa_entry = ttk.Entry(window, width=7, textvariable=nacaa_var)
 nacaa_entry.grid(column=1, row=2, sticky=(W, E))
 
-AoA_value=StringVar()
-curv_entry = ttk.Entry(window, width=7, textvariable=AoA_value)
-curv_entry.grid(column=3, row=2, sticky=(W, E))
-
-U_inf_value=StringVar()
+U_inf_value=int()
 curv_entry = ttk.Entry(window, width=7, textvariable=U_inf_value)
 curv_entry.grid(column=2, row=2, sticky=(W, E))
 
+AoA_value=float()
+curv_entry = ttk.Entry(window, width=7, textvariable=AoA_value)
+curv_entry.grid(column=3, row=2, sticky=(W, E))
+
+
+
 nacaa_entry.focus()
-window.bind("<Return>", calculate())
+# window.bind("<Return>", calculate())
 
 #stile un po' più estetico
 sv_ttk.use_dark_theme()
