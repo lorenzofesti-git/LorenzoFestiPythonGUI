@@ -19,7 +19,7 @@ def nacanum(naca,x):
     corda=1
     arr_naca=list(naca)
     naca_subtype = len(arr_naca)
-    xn=x/float(corda)
+    xn=np.asarray(x/float(corda))
     if naca_subtype == 4:
             #impostiamo i valori con cui trovare il profilo
             m=(int(arr_naca[0]))/100
@@ -36,7 +36,9 @@ def nacanum(naca,x):
                 ymediana=0*x
                 xf=np.concatenate((np.flip(xu), xl))
                 yf=np.concatenate((np.flip(yu), yl))
-                
+                deltY=max(yf)-min(yf)
+                return xu,xl,yu,yl,xf,yf,ymediana,deltY
+            
             else:
                 # troviamo equazione della parte superiore e della parte inferiore del profilo
                 yt=(t/0.2)*((0.2969*xn**(0.5))-(0.126*xn)-(0.3516*xn**2)+(0.2843*xn**3)-(0.1015*xn**4))
@@ -48,6 +50,7 @@ def nacanum(naca,x):
                         ymediana=(m/(1-p)**2)*((1-2*p)+2*p*xn-xn**2)
 
                 # troviamo equazione della parte superiore e della parte inferiore del profilo
+                
                 teth=np.gradient(ymediana,xn)
                 xu=np.array(xn-yt*sin(teth))
                 xl=np.array(xn+yt*sin(teth))
@@ -55,6 +58,8 @@ def nacanum(naca,x):
                 yl=np.array(ymediana-yt*cos(teth))
                 xf=np.concatenate((np.flip(xu), xl))
                 yf=np.concatenate((np.flip(yu), yl))
+                deltY=max(yf)-min(yf)
+                return xu,xl,yu,yl,xf,yf,ymediana,deltY
     elif naca_subtype == 5:
             cl=1.5*int(arr_naca[0])
             if int(arr_naca[1])<=0:
@@ -83,5 +88,7 @@ def nacanum(naca,x):
             yl=np.array(ymediana-yt*cos(teth))
             xf=np.concatenate((np.flip(xu), xl))
             yf=np.concatenate((np.flip(yu), yl))
+            deltY=max(yf)-min(yf)
+            return xu,xl,yu,yl,xf,yf,ymediana,deltY
     else:
             return None  # Restituisce None se il numero non ha 4 o 5 arr_naca
