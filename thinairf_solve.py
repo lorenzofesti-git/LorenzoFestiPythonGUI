@@ -8,15 +8,7 @@ import matplotlib.pyplot as plt
 
 
 def solve_thin_airf_theory(angle_of_attack, chord=1, n_coefficients=3, report=True):
-	"""
-	Solve the thin airfoil theory for a given angle of attack and chord length using the number of A coefficients
-	as given in n_coefficients.
-	:param angle_of_attack: Angle of attack of the airfoil IN RADIANS.
-	:param chord: Chord length with same units as the x coordinates. Optional, default is normalized (c=1).
-	:param n_coefficients: Number of coefficients to be solved. Must be greater than 2. Optional, default is 3.
-	:param report: Boolean indicating if a report containing all relevant calculated information should be printed.
-	:return: Tuple containing the corresponding coefficients.
-	"""
+	
 	# Perform the change of variable. To do so, first transform the numpy polynomial to sympy.
 	sympy_poly_der = sp.Poly(best_pol_der.coefficients, sp.Symbol('x'))
 
